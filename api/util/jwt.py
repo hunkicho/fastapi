@@ -47,7 +47,7 @@ def create_refresh_token(subject: Union[str, Any], expires_delta: int = None) ->
 
     return encoded_jwt
 
-async def get_current_user(token: dict = Depends(oauth2_scheme)):
+async def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -76,7 +76,7 @@ async def get_current_user(token: dict = Depends(oauth2_scheme)):
     return user_info
 
 async def get_current_active_user(
-    current_user: Annotated[dict, Depends(get_current_user)]
+    current_user: dict = Depends(get_current_user)
 ):
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")

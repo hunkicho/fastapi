@@ -20,7 +20,6 @@ class LoginInput(BaseModel):
 @app.post("/login", summary="Create access and refresh tokens for user", response_model=TokenSchema)
 def login(input:LoginInput):
     login = Login()
-    print(">>>")
 
     login.id = input.id
     login.password = input.password
@@ -64,6 +63,5 @@ def test(value: str):
     return user.get_user_info_by_id()
 
 @app.get("/users/me/", response_model=dict)
-async def read_users_me(current_user: User = Depends(get_current_user)):
-    print("asdsad11")
+async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
