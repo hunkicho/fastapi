@@ -14,7 +14,7 @@ class User:
         db = Database()
 
         where_params = (self.id,)
-        sql = "SELECT * FROM user WHERE id = %s"
+        sql = "SELECT * FROM member WHERE mem_id = %s"
         db.execute(sql, where_params)
         result = db.cursor.fetchone()
 

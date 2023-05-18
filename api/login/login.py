@@ -13,7 +13,7 @@ class Login:
         db = Database()
 
         where_params = (self.id,)
-        sql = "SELECT * FROM user WHERE id = %s"
+        sql = "SELECT * FROM member WHERE mem_id = %s"
         print(sql % where_params)
         db.execute(sql, where_params)
         result = db.cursor.fetchall()
