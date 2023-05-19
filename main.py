@@ -9,6 +9,24 @@ from typing import Annotated
 
 app = FastAPI()
 
+# CORS
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# origins
+origins = [
+    "*",
+    # "http://localhost",
+    # "http://localhost:8080",
+]
+
 class TokenSchema(BaseModel):
     token_type: str
     access_token: str
@@ -24,7 +42,6 @@ def login(input:LoginInput):
     login.id = input.id
     login.password = input.password
     result = login.login()
-    print(result)
 
     if result is None:
         raise HTTPException(status_code=404, detail="Invalid ID or password")
@@ -61,7 +78,3 @@ def test(value: str):
 
     user.id = value
     return user.get_user_info_by_id()
-
-@app.get("/users/me/", response_model=dict)
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user

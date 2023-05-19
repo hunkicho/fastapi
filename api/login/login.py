@@ -14,11 +14,9 @@ class Login:
 
         where_params = (self.id,)
         sql = "SELECT * FROM member WHERE mem_id = %s"
-        print(sql % where_params)
         db.execute(sql, where_params)
         result = db.cursor.fetchall()
         print(result)
-
         result_value = True
 
         if len(result) > 0:
@@ -33,7 +31,7 @@ class Login:
             db = Database()
 
             where_params = (self.id, self.password)
-            sql = "SELECT * FROM user WHERE id = %s AND password = %s"
+            sql = "SELECT * FROM member WHERE mem_id = %s AND mem_pw = %s"
             db.execute(sql, where_params)
             result = db.cursor.fetchall()
 
