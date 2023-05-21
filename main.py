@@ -72,9 +72,27 @@ def check_id(id: str):
     login.id = id
     return login.check_id()
 
-@app.get("/test/{value}")
-def test(value: str):
-    user = User()
 
-    user.id = value
-    return user.get_user_info_by_id()
+class SignupInput(BaseModel):
+    id:str
+    password:str
+@app.post("/signup")
+def signup(input:LoginInput):
+    login = Login()
+
+    login.id = input.id
+    login.password = input.password
+
+    result_value = {
+        "signup": True,
+        "detail": {},
+    }
+
+    if login.check_id():
+        login.signup()
+        result_value["detail"]["id"] = login.id
+    else:
+        result_value["signup"] = False
+        result_value["detail"]["reason"] = "이미 존재하는 아이디입니다."
+
+    return result_value

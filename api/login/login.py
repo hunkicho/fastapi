@@ -1,6 +1,7 @@
 from api.db.db import Database
 from fastapi import HTTPException
 from passlib.context import CryptContext
+from api.util.jwt import get_hashed_password
 
 
 class Login:
@@ -9,6 +10,7 @@ class Login:
         self.id = None
         self.password = None
     
+
     def check_id(self) -> bool:
         db = Database()
 
@@ -49,5 +51,17 @@ class Login:
             db.connection.rollback()
             db.close()
             raise HTTPException(status_code=500, detail=str(e))
-            
+        
+
+    def signup(self):
+        try:
+            db = Database()
+
+            where_params = (self.id, get_hashed_password(self.password))
+            sql = "INSERT INTO member(mem_id, mem_pw) VALUES (%s, %s)"
+            db.execute(sql, where_params)
+        except Exception as e:
+            db.connection.rollback()
+            db.close()
+            raise HTTPException(status_code=500, detail=str(e))
             
